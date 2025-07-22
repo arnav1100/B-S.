@@ -1,0 +1,119 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BIG/SMALL STRATEGY - CRACK MODE</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #0f0f0f, #1a1a1a);
+      color: #ffffff;
+      padding: 20px;
+    }
+    h1, h2 {
+      color: #00ffcc;
+    }
+    .quote {
+      font-style: italic;
+      color: #ff0044;
+      margin-top: -10px;
+    }
+    .section {
+      background-color: #1e1e1e;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+      box-shadow: 0 0 10px rgba(0,255,255,0.2);
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+    button {
+      background-color: #00ffcc;
+      color: black;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+    button:hover {
+      background-color: #00ccaa;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #00ffcc;
+    }
+    .opposite-signal {
+      color: #ff4444;
+    }
+  </style>
+</head>
+<body>
+  <h1>CRACKER PREDICTOR 1.0</h1>
+  <p class="quote">"Sniper mind. Warrior aim. Predict with dominance."</p>  <div class="section">
+    <h2>🎯 Set Your Target</h2>
+    <label>From ₹:</label>
+    <input type="number" id="fromAmt">
+    <label>To ₹:</label>
+    <input type="number" id="toAmt">
+    <button onclick="calculateFundPlan()">Plan Strategy</button>
+    <div id="fundPlan" class="result"></div>
+  </div>  <div class="section">
+    <h2>📥 Enter Last 20 Results</h2>
+    <label>Last 20 numbers (separated by commas):</label>
+    <textarea id="resultsInput" rows="4"></textarea>
+    <button onclick="predictResult()">Predict BIG / SMALL</button>
+    <div id="prediction" class="result"></div>
+  </div>  <script>
+    function predictResult() {
+      let input = document.getElementById("resultsInput").value;
+      let nums = input.split(',').map(x => parseInt(x.trim())).filter(x => !isNaN(x));
+      if (nums.length < 20) {
+        document.getElementById("prediction").innerHTML = "Enter 20 valid results!";
+        return;
+      }
+
+      let big = 0, small = 0;
+      nums.forEach(num => {
+        if (num >= 5) big++;
+        else small++;
+      });
+
+      let majority = big > small ? "BIG" : small > big ? "SMALL" : "EQUAL";
+      let prediction = (majority === "EQUAL") ? "⚠️ Tie - Use streak logic" : majority;
+
+      document.getElementById("prediction").innerHTML = `Majority: ${majority} <br> ➤ Suggested Bet: <strong>${prediction}</strong>`;
+    }
+
+    function calculateFundPlan() {
+      let fromAmt = parseFloat(document.getElementById("fromAmt").value);
+      let toAmt = parseFloat(document.getElementById("toAmt").value);
+
+      if (isNaN(fromAmt) || isNaN(toAmt) || toAmt <= fromAmt) {
+        document.getElementById("fundPlan").innerText = "Invalid target range";
+        return;
+      }
+
+      let totalProfit = toAmt - fromAmt;
+      let base = Math.ceil(totalProfit / 5);
+      let plan = [];
+      for (let i = 1; i <= 5; i++) {
+        let amount = base + (i * 10);
+        let signal = (i % 2 === 0) ? "SMALL" : "BIG";
+        plan.push(`Round ${i}: ₹${amount} on ${signal}`);
+      }
+
+      document.getElementById("fundPlan").innerHTML = plan.join("<br>");
+    }
+  </script></body>
+</html>
